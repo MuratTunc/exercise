@@ -1,31 +1,58 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
-func checkCapitalExist(countires map[string]string, capital string) bool {
-
-	for _, value := range countires {
-		if value == capital {
-			return true
-		}
-	}
-	return false
-
+type Car struct {
+	Brand string
+	Model string
+	Year  int
 }
+
+func worker(wg *sync.WaitGroup, id int) {
+	defer wg.Done()
+	fmt.Println("Worker", id, "started")
+}
+
+type Person struct {
+	Name string
+}
+
+func (p *Person) updateName(newName string) {
+	p.Name = newName
+}
+
 func main() {
 
-	countries := map[string]string{
-		"Turkey":  "Ankara",
-		"Germany": "Berlin",
-		"Japan":   "Tokyo",
+	var wg sync.WaitGroup
+
+	for i := 1; i <= 3; i++ {
+		wg.Add(1)
+		go worker(&wg, i)
 	}
 
-	capital, exist := countries["Germany"]
+	wg.Wait()
+	fmt.Println("All Workers Done")
 
-	if exist {
-		fmt.Println("Berlin exist", capital)
+	ch := make(chan int, 3)
+
+	ch <- 10
+	ch <- 20
+	ch <- 30
+
+	close(ch)
+
+	for value := range ch {
+		fmt.Println(value)
 	}
 
-	fmt.Println(checkCapitalExist(countries, "Tokyo"))
+	person := Person{Name: "mutu"}
+	fmt.Println(person)
+
+	person.updateName("bro")
+
+	fmt.Println(person)
 
 }
