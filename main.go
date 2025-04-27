@@ -1,36 +1,54 @@
 package main
 
-import "fmt"
-
-func Add(a int, b int) int {
-	return a + b
-}
-
-func SumAndDiff(a int, b int) (int, int) {
-	return a + b, a - b
-
-}
-
-func Multiply(a int, b int) int {
-	return a * b
-}
-
-func Divide(a int, b int) (int, int) {
-	return a / b, a % b
-}
+import (
+	"fmt"
+)
 
 func main() {
 
-	sum, diff := SumAndDiff(10, 4)
+	nums := []int{10, 20, 30}
 
-	fmt.Println("sum:", sum)
-	fmt.Println("diff:", diff)
+	for index, value := range nums {
+		fmt.Println(index, value)
+	}
 
-	mul := Multiply(10, 4)
-	fmt.Println("mul:", mul)
+	original := []int{1, 2, 3}
+	copySlice := make([]int, len(original))
+	copy(copySlice, original)
 
-	div, remain := Divide(10, 4)
-	fmt.Println("div:", div)
-	fmt.Println("remain:", remain)
+	fmt.Println("Original:", original)
+	fmt.Println("Copy:", copySlice)
+
+	s := []int{1, 2, 33, 4, 5}
+
+	fmt.Println("Slice:", s)
+	size := len(s)
+	fmt.Println("size:", size)
+
+	//max element find
+	var max = 0
+	for i := 0; i < size-1; i++ {
+		for m := i + 1; m < size; m++ {
+			if s[i] > s[m] {
+				max = s[i]
+			} else if s[i] <= s[m] {
+				max = s[m]
+				i++
+				break
+			}
+		}
+
+	}
+	fmt.Println("max_number:", max)
+
+	//reverse slice
+	slice2 := make([]int, len(s))
+
+	for index, value := range s {
+		slice2[size-index-1] = value
+
+	}
+
+	fmt.Println("Reversed:", slice2)
 
 }
